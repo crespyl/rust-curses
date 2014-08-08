@@ -120,7 +120,7 @@ pub fn main() {
 
         let name = context.longname();
         context.addstr(name.as_slice());
-        context.bkgd(chars::ascii_ch('_' as i8));
+        context.bkgd(chars::ascii_ch(' ' as i8));
         context.bkgdset(chars::ascii_ch('*' as i8));
 
         while !finished {
@@ -153,7 +153,7 @@ pub fn main() {
                 b.iter().map(|&c| chars::ascii_ch(c)).collect();
             context.addchstr(cs);
 */
-            context.flash();
+            // context.flash();
 
             context.attrset(attrs::color_pair(num % 8));
             num = num + 1;

@@ -9,9 +9,10 @@
 #![crate_type="lib"]
 
 extern crate libc;
+extern crate ncurses_core;
 
-use nc = ncurses_core;
 use ncurses_core::{WINDOW_p, SCREEN_p};
+use nc = ncurses_core;
 
 pub fn lines() -> libc::c_int { nc::LINES }
 pub fn cols() -> libc::c_int { nc::COLS }
@@ -398,7 +399,7 @@ pub mod chars {
         }
     }
     impl FromCInt for reset_key {
-        fn from_c_int(i:c_int) -> reset_key { 
+        fn from_c_int(i:c_int) -> reset_key {
             let i = i as i32; assert!(reset_key::covers(i as i32)); unsafe { x(i) }
         }
     }
@@ -715,6 +716,7 @@ pub mod input {
     impl<'a> GetCh for super::Context<'a> {
         fn getch(&mut self) -> raw_ch {
             use std::char;
+            use ncurses_core::get_wch;
             let mut result : nc::wint_t = 0;
             'getch: loop {
                 let r = unsafe { nc::get_wch(&mut result as *mut nc::wint_t) };
@@ -1102,7 +1104,7 @@ pub mod output {
             c.as_imm_buf(|p, n| { unsafe {
                         let n = n as c_int;
                         if n < 0 { fail!(); }
-                        fail_if_err!(nc::addnwstr(p as *const i32, n))
+                        fail_if_err!(nc::addnstr(p as *const i8, n))
                     } });
         }
         pub fn mvaddstr(&mut self, y: c_int, x: c_int, s: &str) {

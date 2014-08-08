@@ -1,10 +1,11 @@
-#[feature(globs)];
+#![feature(globs)]
 
-extern mod ncurses_core (vers = "5.7");
+extern crate ncurses_core;
+extern crate libc;
 
 fn body() {
     use ncurses_core::*;
-    use std::libc::{c_int,c_char};
+    use libc::{c_int,c_char};
 
     unsafe {
         let mesg = "Just a string";
@@ -17,7 +18,7 @@ fn body() {
         mesg.with_c_str(|m| { mvaddstr(row-2, 0, m); });
         let mesg = "Try resizing your window (if possible) \
                     and then run this program again";
-        mesg.with_c_str(|m:*c_char| { addstr(m); });
+        mesg.with_c_str(|m:*const c_char| { addstr(m); });
         refresh();
         getch();
         endwin();

@@ -1,6 +1,12 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case_functions)]
 #![allow(dead_code)]
+#![feature(macro_rules)]
+
+#![crate_name="ncurses_core"]
+#![crate_type="lib"]
+
+extern crate libc;
 
 use libc::{c_char, c_int, c_short, c_uchar, c_uint, c_void};
 use libc::{wchar_t, FILE, EOF};
@@ -29,7 +35,7 @@ struct WINDOW;
 struct SCREEN;
 
 
-#[link(name = "ncurses")]
+#[link(name = "ncursesw")]
 extern {
     // warning about unused static definitions seems over-zealous to me.
     #![allow(dead_code)]
@@ -51,7 +57,7 @@ extern {
     /// scrolling region, then scrolling region is scrolled up one
     /// line.
     ///
-    /// Special cases: 
+    /// Special cases:
     /// - backspace moves cursor one character left; no-op at left-edge of window.
     /// - newline does `clrtoeol` and advances to left-margin in next line
     /// - tab advances to next column (every eight characters, or as set by TABSIZE).
@@ -88,7 +94,7 @@ extern {
 
     /// Writes (at most `n` characters of) null-terminated `str` into
     /// window.
-    /// 
+    ///
     /// FSK: man page claims that this is similar to calling `waddch`
     /// once for each character in the string, but it also claims that
     /// if `n` is -1, then the entire string will be added, up to the
@@ -365,7 +371,7 @@ extern {
     fn slk_clear () -> c_int;
     fn slk_color (_:c_short) -> c_int;
     fn slk_init (_:c_int) -> c_int;
-    fn slk_label (_:c_int) -> char_p; 
+    fn slk_label (_:c_int) -> char_p;
     fn slk_noutrefresh () -> c_int;
     fn slk_refresh () -> c_int;
     fn slk_restore () -> c_int;

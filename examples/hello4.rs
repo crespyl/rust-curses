@@ -1,4 +1,4 @@
-extern mod ncurses_core (vers = "5.7");
+extern crate ncurses_core;
 
 #[fixed_stack_segment]
 fn main() {
@@ -34,11 +34,11 @@ fn main() {
             // FSK: muck with the internals within format strings,
             // FSK: and thus my simplification of passing one (fmt!'ed) string
             // FSK: will be broken.
-            let mychar = std::char::from_u32(ch as u32).unwrap().to_str().to_c_str();
+            let mychar = std::char::from_u32(ch as u32).unwrap().to_string().to_c_str();
             mychar.with_ref(|m| { printw(m); });
             attroff(A_BOLD);
         }
-        refresh();                    // 
+        refresh();                    //
         getch();
         endwin();                     /* Terminate and cleanup  */
     }

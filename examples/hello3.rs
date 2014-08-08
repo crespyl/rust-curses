@@ -1,8 +1,8 @@
-extern mod ncurses_core (vers = "5.7"); 
+extern crate ncurses;
 
 #[fixed_stack_segment]
 fn body() {
-    use ncurses_core::{initscr,printw,refresh,getch,endwin};
+    use ncurses::ncurses_core::{initscr,printw,refresh,getch,endwin};
 
     unsafe {
         initscr();                    /* Start curses mode      */
